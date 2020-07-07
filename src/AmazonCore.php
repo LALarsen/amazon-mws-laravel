@@ -346,6 +346,26 @@ abstract class AmazonCore
     }
 
     /**
+     * Decodes an XML error response and returns a string
+     *
+     * @param array $r <p>The HTTP response array. Expects the array to have
+     * the fields <i>code</i>, <i>body</i>, and <i>error</i>.</p>
+     * @return string
+     */
+    public function getResponseError($r)
+    {
+        if (!is_array($r) || !array_key_exists('code', $r)) {
+            return '';
+        }
+        if ($r['code'] == 200) {
+            return '';
+        } else {
+            $xml = simplexml_load_string($r['body'])->Error;
+            return $r['code'] . " " . $r['error'] . ": " . $xml->Code . " - " . $xml->Message;
+        }
+    }
+
+    /**
      * Checks whether or not the response is OK.
      *
      * Verifies whether or not the HTTP response has the 200 OK code. If the code

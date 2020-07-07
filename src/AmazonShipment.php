@@ -202,6 +202,48 @@ class AmazonShipment extends AmazonInboundCore
     }
 
     /**
+     * Sets the shipment name. (Required)
+     * @param string $s
+     * @return boolean <b>FALSE</b> if improper input
+     */
+    public function setName($s)
+    {
+        if (is_string($s) && $s) {
+            $this->options['InboundShipmentHeader.ShipmentName'] = $s;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Sets the destination fulfillment center id. (Optional)
+     * @param string $s
+     * @return boolean <b>FALSE</b> if improper input
+     */
+    public function setDestinationFulfillmentCenterId($s)
+    {
+        if (is_string($s) && $s) {
+            $this->options['InboundShipmentHeader.DestinationFulfillmentCenterId'] = $s;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Sets the intended box contents source. (Optional)
+     * @param string $s <p>"NONE", "FEED", "2D_BARCODE"</p>
+     * @return boolean <b>FALSE</b> if improper input
+     */
+    public function setIntendedBoxContentsSource($s)
+    {
+        if (is_string($s) && $s) {
+            $this->options['InboundShipmentHeader.IntendedBoxContentsSource'] = $s;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Sets the shipment status. (Required)
      * @param string $s <p>"WORKING", "SHIPPED", or "CANCELLED" (updating only)</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -261,14 +303,6 @@ class AmazonShipment extends AmazonInboundCore
             $this->log("Shipment ID must be set in order to create it", 'Warning');
             return false;
         }
-        if (!array_key_exists('InboundShipmentHeader.ShipFromAddress.Name', $this->options)) {
-            $this->log("Header must be set in order to make a shipment", 'Warning');
-            return false;
-        }
-        if (!array_key_exists('InboundShipmentItems.member.1.SellerSKU', $this->options)) {
-            $this->log("Items must be set in order to make a shipment", 'Warning');
-            return false;
-        }
         $this->options['Action'] = 'CreateInboundShipment';
 
         $url = $this->urlbase . $this->urlbranch;
@@ -310,14 +344,6 @@ class AmazonShipment extends AmazonInboundCore
     {
         if (!isset($this->options['ShipmentId'])) {
             $this->log("Shipment ID must be set in order to update it", 'Warning');
-            return false;
-        }
-        if (!array_key_exists('InboundShipmentHeader.ShipFromAddress.Name', $this->options)) {
-            $this->log("Header must be set in order to update a shipment", 'Warning');
-            return false;
-        }
-        if (!array_key_exists('InboundShipmentItems.member.1.SellerSKU', $this->options)) {
-            $this->log("Items must be set in order to update a shipment", 'Warning');
             return false;
         }
         $this->options['Action'] = 'UpdateInboundShipment';

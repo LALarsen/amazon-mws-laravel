@@ -116,6 +116,25 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
     }
 
     /**
+     * Sets the ship to country. (Optional)
+     *
+     * @param string $s <p>"CA", "MX", "US", "DE", "ES", "FR", "GB", "IT"</p>
+     * @return boolean <b>FALSE</b> if improper input
+     */
+    public function setShipToCountry($s)
+    {
+        if (is_string($s) && $s) {
+            if (in_array($s, ['CA', 'MX', 'US', 'DE', 'ES', 'FR', 'GB', 'IT'])) {
+                $this->options['ShipToCountryCode'] = $s;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Sets the labeling preference. (Optional)
      *
      * If this parameter is not set, Amazon will assume SELLER_LABEL.
@@ -249,8 +268,11 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
 
             $xml = simplexml_load_string($response['body'])->$path->InboundShipmentPlans;
         }
-
-        $this->parseXML($xml);
+        if ($this->parseXML($xml) === false) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
