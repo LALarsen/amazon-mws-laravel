@@ -121,7 +121,11 @@ class AmazonProductList extends AmazonProductsCore implements \Iterator
      */
     public function fetchProductList()
     {
-        if (!array_key_exists('IdList.Id.1', $this->options)) {
+		if (!array_key_exists('MarketplaceId', $this->options) || is_null($this->options['MarketplaceId'])) {
+			$this->log("Marketplace ID must be set in order to look them up!", 'Warning');
+			return false;
+		}
+		if (!array_key_exists('IdList.Id.1', $this->options)) {
             $this->log("Product IDs must be set in order to fetch them!", 'Warning');
             return false;
         }

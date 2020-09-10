@@ -54,13 +54,6 @@ abstract class AmazonProductsCore extends AmazonCore
             $this->options['Version'] = $AMAZON_VERSION_PRODUCTS;
         }
 
-        $store = config('amazon-mws.store');
-        if (isset($store[$s]) && array_key_exists('marketplaceId', $store[$s])) {
-            $this->options['MarketplaceId'] = $store[$s]['marketplaceId'];
-        } else {
-            $this->log("Marketplace ID is missing", 'Urgent');
-        }
-
         if (isset($THROTTLE_LIMIT_PRODUCT)) {
             $this->throttleLimit = $THROTTLE_LIMIT_PRODUCT;
         }

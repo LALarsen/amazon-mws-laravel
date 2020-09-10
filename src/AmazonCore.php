@@ -482,6 +482,17 @@ abstract class AmazonCore
     }
 
     /**
+     * Set a configuration option
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setOption($key, $value)
+    {
+        $this->options[$key] = $value;
+    }
+
+    /**
      * Writes a message to the log.
      *
      * This method adds a message line to the log file defined by the config.

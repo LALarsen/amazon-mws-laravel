@@ -187,7 +187,11 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     public function fetchCompetitivePricing()
     {
-        if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
+		if (!array_key_exists('MarketplaceId', $this->options) || is_null($this->options['MarketplaceId'])) {
+			$this->log("Marketplace ID must be set in order to look them up!", 'Warning');
+			return false;
+		}
+		if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
                 $this->options)
         ) {
             $this->log("Product IDs must be set in order to look them up!", 'Warning');
@@ -254,7 +258,11 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     public function fetchLowestOffer()
     {
-        if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
+		if (!array_key_exists('MarketplaceId', $this->options) || is_null($this->options['MarketplaceId'])) {
+			$this->log("Marketplace ID must be set in order to look them up!", 'Warning');
+			return false;
+		}
+		if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
                 $this->options)
         ) {
             $this->log("Product IDs must be set in order to look them up!", 'Warning');
@@ -317,7 +325,11 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     public function fetchMyPrice()
     {
-        if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
+		if (!array_key_exists('MarketplaceId', $this->options) || is_null($this->options['MarketplaceId'])) {
+			$this->log("Marketplace ID must be set in order to look them up!", 'Warning');
+			return false;
+		}
+		if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
                 $this->options)
         ) {
             $this->log("Product IDs must be set in order to look them up!", 'Warning');
@@ -383,14 +395,18 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     public function fetchCategories()
     {
-        if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
-                $this->options)
-        ) {
-            $this->log("Product IDs must be set in order to look them up!", 'Warning');
-            return false;
-        }
+		if (!array_key_exists('MarketplaceId', $this->options) || is_null($this->options['MarketplaceId'])) {
+			$this->log("Marketplace ID must be set in order to look them up!", 'Warning');
+			return false;
+		}
+		if (!array_key_exists('SellerSKUList.SellerSKU.1', $this->options) && !array_key_exists('ASINList.ASIN.1',
+																								$this->options)
+		) {
+			$this->log("Product IDs must be set in order to look them up!", 'Warning');
+			return false;
+		}
 
-        $this->prepareCategories();
+		$this->prepareCategories();
 
         $url = $this->urlbase . $this->urlbranch;
 
